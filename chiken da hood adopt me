@@ -1,0 +1,610 @@
+repeat
+    wait()
+until game:IsLoaded()
+wait()
+
+-- Not my adonis bypasses - Everything else made by me (OneFool)
+for k, v in pairs(getgc(true)) do
+    if pcall(function() return rawget(v, "indexInstance") end) and type(rawget(v, "indexInstance")) == "table" and (rawget(v, "indexInstance"))[1] == "kick" then
+        v.tvk = { "kick", function() return game.Workspace:WaitForChild("") end }
+    end
+end
+for i, v in next, getgc() do
+    if typeof(v) == "function" and islclosure(v) and not isexecutorclosure(v) then
+        local Constants = debug.getconstants(v)
+        if table.find(Constants, "Detected") and table.find(Constants, "crash") then
+            setthreadidentity(2)
+            hookfunction(v, function()
+                return task.wait(9e9)
+            end)
+            setthreadidentity(7)
+        end
+    end
+end
+
+-- Define services
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Create ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.Enabled = false -- Initially hidden
+
+-- Create Frame
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0.1, 0, 0.2, 0) -- Adjusted size
+Frame.Position = UDim2.new(0.4, 0, 0.35, 0) -- Adjusted position
+Frame.BorderSizePixel = 0
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.BackgroundTransparency = 0 -- Initially opaque
+Frame.Parent = ScreenGui
+
+-- Create TextLabel
+local TextGui = Instance.new("TextLabel")
+TextGui.Size = UDim2.new(1, 0, 0.1, 0)
+TextGui.Position = UDim2.new(0, 0, -0.1, 0)
+TextGui.BorderSizePixel = 0
+TextGui.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+TextGui.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextGui.Font = Enum.Font.GothamBold
+TextGui.TextSize = 14 -- Adjusted text size
+TextGui.TextStrokeTransparency = 0.8
+TextGui.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+TextGui.Text = "MATVEYKA GUI"
+TextGui.Parent = Frame
+
+-- Create Buttons
+local Button1 = Instance.new("TextButton")
+Button1.Size = UDim2.new(0.8, 0, 0.1, 0) -- Adjusted size
+Button1.Position = UDim2.new(0.1, 0, 0.15, 0) -- Adjusted position
+Button1.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button1.Text = "DATA ROLLBACK"
+Button1.Font = Enum.Font.GothamSemibold
+Button1.TextSize = 12 -- Adjusted text size
+Button1.BackgroundTransparency = 0.5
+Button1.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Button1.Parent = Frame
+
+local Button2 = Instance.new("TextButton")
+Button2.Size = UDim2.new(0.8, 0, 0.1, 0) -- Adjusted size
+Button2.Position = UDim2.new(0.1, 0, 0.3, 0) -- Adjusted position
+Button2.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button2.Text = "REJOIN"
+Button2.Font = Enum.Font.GothamSemibold
+Button2.TextSize = 12 -- Adjusted text size
+Button2.BackgroundTransparency = 0.5
+Button2.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Button2.Parent = Frame
+
+-- Create No-Fall Button
+local NoFallButton = Instance.new("TextButton")
+NoFallButton.Size = UDim2.new(0.8, 0, 0.1, 0) -- Adjusted size
+NoFallButton.Position = UDim2.new(0.1, 0, 0.45, 0) -- Adjusted position
+NoFallButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+NoFallButton.Text = "No-Fall: OFF" -- Initial text
+NoFallButton.Font = Enum.Font.GothamSemibold
+NoFallButton.TextSize = 12 -- Adjusted text size
+NoFallButton.BackgroundTransparency = 0.5
+NoFallButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+NoFallButton.Parent = Frame
+
+-- Create Auto Dodges Button (Toggle)
+local AutoDodgesButton = Instance.new("TextButton")
+AutoDodgesButton.Size = UDim2.new(0.8, 0, 0.1, 0) -- Adjusted size
+AutoDodgesButton.Position = UDim2.new(0.1, 0, 0.6, 0) -- Adjusted position
+AutoDodgesButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoDodgesButton.Text = "Auto Dodges: OFF" -- Initial text
+AutoDodgesButton.Font = Enum.Font.GothamSemibold
+AutoDodgesButton.TextSize = 12 -- Adjusted text size
+AutoDodgesButton.BackgroundTransparency = 0.5
+AutoDodgesButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+AutoDodgesButton.Parent = Frame
+
+-- Create CoordinateLabel
+local CoordinateLabel = Instance.new("TextLabel")
+CoordinateLabel.Size = UDim2.new(1, 0, 0.05, 0) -- Adjusted size
+CoordinateLabel.Position = UDim2.new(0, 0, 1, 5) -- Adjusted position to be under Frame
+CoordinateLabel.AnchorPoint = Vector2.new(0, 0) -- Adjusted anchor point to attach to the bottom-left corner of the frame
+CoordinateLabel.BorderSizePixel = 0
+CoordinateLabel.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+CoordinateLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+CoordinateLabel.Font = Enum.Font.GothamBold
+CoordinateLabel.TextSize = 12 -- Adjusted text size
+CoordinateLabel.TextStrokeTransparency = 0.8
+CoordinateLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+CoordinateLabel.Text = ""
+CoordinateLabel.Parent = Frame -- Parented to the frame
+
+-- Create CloseButton
+local CloseButton = Instance.new("TextButton")
+CloseButton.Size = UDim2.new(0.05, 0, 0.03, 0)
+CloseButton.Position = UDim2.new(0.95, 0, 0, 0)
+CloseButton.BorderSizePixel = 0
+CloseButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.Text = "X"
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.TextSize = 14 -- Adjusted text size
+CloseButton.TextStrokeTransparency = 0.8
+CloseButton.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+CloseButton.Parent = Frame
+
+-- Define variables to track drag state
+local isDragging = false
+local dragStartPos = nil
+local dragStartPosition = nil
+
+-- Function to handle mouse button press
+local function handleDragStart(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        isDragging = true
+        dragStartPos = input.Position
+        dragStartPosition = Frame.Position
+    end
+end
+
+-- Function to handle mouse movement while dragging
+local function handleDragMove(input)
+    if isDragging then
+        local delta = input.Position - dragStartPos
+        Frame.Position = UDim2.new(0, dragStartPosition.X.Offset + delta.X, 0, dragStartPosition.Y.Offset + delta.Y)
+    end
+end
+
+-- Function to handle mouse button release
+local function handleDragEnd(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        isDragging = false
+    end
+end
+
+-- Setup dragging for the Frame
+Frame.InputBegan:Connect(handleDragStart)
+Frame.InputChanged:Connect(handleDragMove)
+Frame.InputEnded:Connect(handleDragEnd)
+
+-- Function to continuously update the color of the buttons and display coordinates
+local function updateButtonColorsAndCoordinates()
+    while true do
+        local hue = (tick() % 360) / 360
+        local saturation = 0.5
+        local brightness = 0.5
+        local buttonColor = Color3.fromHSV(hue, saturation, brightness)
+        Button1.BackgroundColor3 = buttonColor
+        Button2.BackgroundColor3 = buttonColor
+        NoFallButton.BackgroundColor3 = buttonColor
+        AutoDodgesButton.BackgroundColor3 = buttonColor
+        
+        -- Update coordinates
+        local character = Players.LocalPlayer.Character
+        if character then
+            local position = character.PrimaryPart.Position
+            CoordinateLabel.Text = string.format("X: %.2f, Y: %.2f, Z: %.2f", position.X, position.Y, position.Z)
+        else
+            CoordinateLabel.Text = ""
+        end
+        
+        wait(0.05)  -- Adjust the frequency of updates here (0.05 second)
+    end
+end
+
+-- Start coroutine for updating button colors and coordinates
+coroutine.wrap(updateButtonColorsAndCoordinates)()
+
+-- Function for Button1 click
+Button1.MouseButton1Click:Connect(function()
+    while task.wait() do
+        local ohTable1 = {
+            ["1"] = "\255"
+        }
+        ReplicatedStorage.Remotes.Data.UpdateHotbar:FireServer(ohTable1)
+    end
+end)
+
+-- Function for Button2 click
+Button2.MouseButton1Click:Connect(function()
+    local ts = game:GetService("TeleportService")
+    local p = Players.LocalPlayer
+    ts:Teleport(game.PlaceId, p)
+end)
+
+-- Function to toggle the No-Fall feature
+local NoFall = false
+local function toggleNoFall()
+    NoFall = not NoFall
+    NoFallButton.Text = NoFall and "No-Fall: ON" or "No-Fall: OFF"
+end
+
+-- Bind the toggleNoFall function to the No-Fall button click
+NoFallButton.MouseButton1Click:Connect(toggleNoFall)
+
+-- Function to toggle the Auto Dodges feature
+local AutoDodgesEnabled = false
+local function toggleAutoDodges()
+    AutoDodgesEnabled = not AutoDodgesEnabled
+    AutoDodgesButton.Text = AutoDodgesEnabled and "Auto Dodges: ON" or "Auto Dodges: OFF"
+end
+
+-- Bind the toggleAutoDodges function to the Auto Dodges button click
+AutoDodgesButton.MouseButton1Click:Connect(toggleAutoDodges)
+
+-- Function to close the GUI with smooth transparency transition
+local function closeGUI()
+    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+    local tween = TweenService:Create(Frame, tweenInfo, {BackgroundTransparency = 1})
+    tween:Play()
+    wait(0.5)
+    ScreenGui.Enabled = false
+end
+
+-- Function to open the GUI with smooth transparency transition
+local function openGUI()
+    ScreenGui.Enabled = true
+    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.In)
+    local tween = TweenService:Create(Frame, tweenInfo, {BackgroundTransparency = 0})
+    tween:Play()
+end
+
+-- Toggle GUI visibility function
+local function toggleGUI()
+    if ScreenGui.Enabled then
+        closeGUI()
+    else
+        openGUI()
+    end
+end
+
+-- Bind toggleGUI function to the Insert key
+local function handleInsertKeyPress(input)
+    if input.KeyCode == Enum.KeyCode.Insert then
+        toggleGUI()
+    end
+end
+
+-- Bind the handleInsertKeyPress function to the InputBegan event
+UserInputService.InputBegan:Connect(handleInsertKeyPress)
+
+-- Bind the closeGUI function to the CloseButton
+CloseButton.MouseButton1Click:Connect(closeGUI)
+
+-- Function to handle resetting the script after character breaks
+local function handleCharacterBreak()
+    while true do
+        local character = Players.LocalPlayer.Character
+        if not character or not character:IsDescendantOf(game) then
+            ScreenGui.Enabled = false
+            wait(1)
+        else
+            wait(1)
+        end
+    end
+end
+
+-- Start coroutine to handle character breaks
+coroutine.wrap(handleCharacterBreak)()
+
+-- Additional script for the No-Fall feature
+local OldNameCall = nil
+OldNameCall = hookmetamethod(game, "__namecall", function(self, ...)
+    local Arg = { ... }
+    if self.Name == "EnviroEffects" and NoFall then
+        return
+    end
+    return OldNameCall(self, ...)
+end)
+
+-- Add flying script
+local function flyScript()
+    local LP = game:GetService("Players").LocalPlayer
+    if not LP.Character then
+        LP.CharacterAdded:Wait()
+    end
+    
+    local inputs = game:GetService("UserInputService")
+    local Cam = workspace.CurrentCamera
+    local T = LP.Character:WaitForChild("HumanoidRootPart")
+    
+    LP.CharacterAdded:Connect(function(Ch)
+        T = Ch:WaitForChild("HumanoidRootPart")
+    end)
+    
+    local CONTROL = {
+        F = 0,
+        B = 0,
+        L = 0,
+        R = 0
+    }
+    
+    local lCONTROL = {
+        F = 0,
+        B = 0,
+        L = 0,
+        R = 0
+    }
+    
+    local _UIS = game:GetService("UserInputService")
+    local KeyCode = Enum.KeyCode
+    
+    local Ev1 = _UIS.InputBegan:Connect(function(UIS, Gc)
+        if Gc then
+            return
+        end
+        if UIS.UserInputType == Enum.UserInputType.Keyboard then
+            if UIS.KeyCode == KeyCode.W then
+                CONTROL.F = 1
+            elseif UIS.KeyCode == KeyCode.S then
+                CONTROL.B = -1
+            elseif UIS.KeyCode == KeyCode.A then
+                CONTROL.L = -1
+            elseif UIS.KeyCode == KeyCode.D then
+                CONTROL.R = 1
+            end
+        end
+    end)
+    
+    local Ev2 = _UIS.InputEnded:Connect(function(UIS, Gc)
+        if Gc then
+            return
+        end
+        if UIS.UserInputType == Enum.UserInputType.Keyboard then
+            if UIS.KeyCode == KeyCode.W then
+                CONTROL.F = 0
+            elseif UIS.KeyCode == KeyCode.S then
+                CONTROL.B = 0
+            elseif UIS.KeyCode == KeyCode.A then
+                CONTROL.L = 0
+            elseif UIS.KeyCode == KeyCode.D then
+                CONTROL.R = 0
+            end
+        end
+    end)
+    
+    local gg = getgenv
+    local CFn = CFrame.new
+    local VC3 = Vector3.new
+    local SPEED = 0
+    
+    gg().Flying = false
+    gg().BaseSpeed = 200 -- Increased flying speed
+    
+    local RS = game:GetService("RunService").RenderStepped
+    local W = RS.Wait
+    
+    inputs.InputBegan:Connect(function(key)
+        if key.KeyCode == Enum.KeyCode.C and not inputs:GetFocusedTextBox() then
+            gg().Flying = true
+        end
+    end)
+    
+    inputs.InputEnded:Connect(function(Key)
+        if Key.KeyCode == Enum.KeyCode.C then
+            gg().Flying = false
+        end
+    end)
+    
+    spawn(function()
+        while wait() do
+            if gg().Flying then
+                W(RS)
+                if CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 then
+                    SPEED = getgenv().BaseSpeed
+                elseif not (CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0) and SPEED ~= 0 then
+                    SPEED = 0
+                end
+                if (CONTROL.L + CONTROL.R) ~= 0 or (CONTROL.F + CONTROL.B) ~= 0 then
+                    T.Velocity = ((Cam.CoordinateFrame.LookVector * (CONTROL.F + CONTROL.B)) + ((Cam.CoordinateFrame * CFn(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B) * .2, 0).Position) - Cam.CoordinateFrame.Position)) * SPEED
+                    lCONTROL = {F = CONTROL.F, B = CONTROL.B, L = CONTROL.L, R = CONTROL.R}
+                elseif (CONTROL.L + CONTROL.R) == 0 and (CONTROL.F + CONTROL.B) == 0 and SPEED ~= 0 then
+                    T.Velocity = ((Cam.CoordinateFrame.LookVector * (lCONTROL.F + lCONTROL.B)) + ((Cam.CoordinateFrame * CFn(lCONTROL.L + lCONTROL.R, (lCONTROL.F + lCONTROL.B) * .2, 0).Position) - Cam.CoordinateFrame.Position)) * SPEED
+                else
+                    T.Velocity = VC3(0, 1, 0)
+                end
+            end
+        end
+    end)
+    
+    CONTROL = {F = 0, B = 0, L = 0, R = 0}
+    lCONTROL = {F = 0, B = 0, L = 0, R = 0}
+    SPEED = 0
+end
+
+flyScript()
+
+-- Function for Auto Dodges
+while true do
+    wait(0.001)
+    if AutoDodgesEnabled then
+        game:GetService("ReplicatedStorage").Remotes.Information.RemoteFunction:FireServer({true, true}, "DodgeMinigame")
+    end
+
+local teleportLocations = {
+{"Accessories Fuser", Vector3.new(5844.98, 52.89, -3438.36)},
+    {"Alchemist Trainer", Vector3.new(2585.17, 386.32, -4029.05)},
+    {"Amorus", Vector3.new(1659.97, 8.72, -1660.96)},
+    {"Assassin Trainer", Vector3.new(1178.22, -8.18, -2308.68)},
+    {"Bard Trainer", Vector3.new(-2157.03, 45.58, -2222.40)},
+    {"Beastmaster Trainer", Vector3.new(-809.63, 57.67, -2474.06)},
+    {"Blade Dancer Trainer", Vector3.new(57.60, 113.06, -5361.91)},
+    {"Blade Sanctuary", Vector3.new(-2860.74, -36.08, -2080.86)},
+    {"Brawler Trainer", Vector3.new(238.33, 94.56, -4654.08)},
+    {"Brawler Trainer", Vector3.new(238.33, 94.56, -4654.08)},
+    {"Cessground", Vector3.new(1919.01, 102.62, -1896.71)},
+    {"Crylight Needed", Vector3.new(2646.76, 353.10, -3288.24)},
+    {"Cursed Corps Quest", Vector3.new(1649.36, 54.14, -3483.95)},
+    {"Drak Wraith Trainer", Vector3.new(1967.27, 23.94, -1436.77)},
+    {"Elementalist Trainer", Vector3.new(-2573.20, 42.70, -2483.40)},
+    {"Impaler Trainer", Vector3.new(2319.24, 386.35, -3624.47)},
+    {"Inferno Enchant", Vector3.new(-4340.71, 67.32, -1600.91)},
+    {"Ingredients Help", Vector3.new(2346.31, 102.99, -2197.16)},
+    {"Ingredients Help (Orderly)", Vector3.new(2660.88, 386.69, -3944.23)},
+    {"Life Song Enchant", Vector3.new(5993.20, 54.50, -3470.91)},
+    {"Looking for Help", Vector3.new(-2418.24, 42.53, -2915.82)},
+    {"Looking for Help 2 Step", Vector3.new(-4730.79, 44.88, -2396.28)},
+    {"Lancer Trainer / Icerift Approach", Vector3.new(-60.18, 159.06, -5603.74)},
+    {"Martial Arts Trainer", Vector3.new(490.15, 116.54, -2654.74)},
+    {"Metrom", Vector3.new(2458.91, 87.25, -2895.88)},
+    {"Necro Trainer", Vector3.new(5948.22, 52.25, -2856.68)},
+    {"Old Ruins", Vector3.new(-2507.40, 43.53, -2929.53)},
+    {"Paladin Trainer", Vector3.new(-2516.72, 42.66, -2956.59)},
+    {"Package Delivery 2 Step", Vector3.new(-2555.19, 42.53, -2908.16)},
+    {"Push the Guy", Vector3.new(2598.28, 387.48, -3771.09)},
+    {"Ranger Trainer", Vector3.new(2591.35, 386.53, -3176.95)},
+    {"Rock Slime", Vector3.new(749.58, 91.07, -3786.08)},
+    {"Rogue Trainer", Vector3.new(-2505.78, 42.80, -2864.27)},
+    {"Spear Trainer", Vector3.new(661.17, 99.13, -3983.44)},
+    {"Someone Is Going to Die", Vector3.new(2181.89, 399.09, -3710.85)},
+    {"Teleportation Place", Vector3.new(2346.31, 102.99, -2197.16)},
+    {"Thorian", Vector3.new(2333.96, 25.72, -364.10)},
+    {"Tor'run Quest 1 Step", Vector3.new(2184.06, 67.07, -577.61)},
+    {"Vampire Mini Boss", Vector3.new(2104.07, 102.62, -2682.97)},
+    {"Vampire Mini Boss", Vector3.new(2104.07, 102.62, -2682.97)},
+    {"Way of Life", Vector3.new(2613.77, 353.14, -3292.51)},
+    {"Westwood", Vector3.new(2531.31, 387.28, -3642.33)},
+    {"Wizard Trainer", Vector3.new(594.11, 124.15, -3608.88)},
+    {"Yarthul", Vector3.new(-5078.45, 51.53, -3127.70)},
+}
+
+-- Sort teleport locations alphabetically
+table.sort(teleportLocations, function(a, b) return a[1] < b[1] end)
+
+-- Create ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.Name = "TeleportGUI"
+
+-- Create TeleportButton
+local TeleportButton = Instance.new("TextButton")
+TeleportButton.Size = UDim2.new(0.1, 0, 0.05, 0)
+TeleportButton.Position = UDim2.new(0.8, 0, 0.1, 0)
+TeleportButton.Text = "Teleport"
+TeleportButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+TeleportButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+TeleportButton.BorderSizePixel = 2
+TeleportButton.BorderColor3 = Color3.new(0, 0, 0)
+TeleportButton.Font = Enum.Font.GothamBold
+TeleportButton.TextSize = 14
+TeleportButton.BackgroundTransparency = 0.8
+TeleportButton.Parent = ScreenGui
+
+-- Create XButton
+local XButton = Instance.new("TextButton")
+XButton.Size = UDim2.new(0.1, 0.1, 0.3, 0)
+XButton.Position = UDim2.new(1, -10, 0, 0)
+XButton.AnchorPoint = Vector2.new(1, 0)
+XButton.Text = "X"
+XButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+XButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+XButton.BorderSizePixel = 0
+XButton.Font = Enum.Font.GothamBold
+XButton.TextSize = 14
+XButton.Parent = TeleportButton
+
+-- Create TeleportFrame
+local TeleportFrame = Instance.new("Frame")
+TeleportFrame.Size = UDim2.new(0.25, 0, 0.5, 0)
+TeleportFrame.Position = UDim2.new(0.375, 0, 0.25, 0)
+TeleportFrame.BackgroundTransparency = 0.5
+TeleportFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+TeleportFrame.Visible = false
+TeleportFrame.Parent = ScreenGui
+
+-- Create ScrollingFrame
+local ScrollingFrame = Instance.new("ScrollingFrame")
+ScrollingFrame.Size = UDim2.new(0.9, 0, 0.9, 0)
+ScrollingFrame.Position = UDim2.new(0.05, 0, 0.05, 0)
+ScrollingFrame.BackgroundTransparency = 0.5
+ScrollingFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+ScrollingFrame.ScrollBarThickness = 10
+ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(50, 120, 190)
+ScrollingFrame.Parent = TeleportFrame
+
+-- Calculate canvas size for ScrollingFrame
+local buttonHeight = 40
+local padding = 5
+local totalButtons = #teleportLocations
+local canvasHeight = (buttonHeight + padding) * totalButtons
+ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, canvasHeight)
+
+-- Populate Teleport locations
+for i, locationData in ipairs(teleportLocations) do
+    local locationName = locationData[1]
+    local locationPosition = locationData[2]
+    
+    local TeleportButton = Instance.new("TextButton")
+    TeleportButton.Size = UDim2.new(0.9, 0, 0, buttonHeight)
+    TeleportButton.Position = UDim2.new(0.05, 0, 0, (i - 1) * (buttonHeight + padding))
+    TeleportButton.Text = locationName
+    TeleportButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    TeleportButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TeleportButton.BorderSizePixel = 0
+    TeleportButton.Font = Enum.Font.GothamBold
+    TeleportButton.TextSize = 14
+    TeleportButton.Parent = ScrollingFrame
+    
+    -- Teleport player on button click with debounce
+    local debounce = false
+    TeleportButton.MouseButton1Click:Connect(function()
+        if not debounce then
+            debounce = true
+            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(locationPosition))
+            wait(0.4) -- Debounce time
+            debounce = false
+            TeleportFrame.Visible = false
+        end
+    end)
+end
+
+-- Dragging functionality for entire GUI
+local UserInputService = game:GetService("UserInputService")
+local draggingFrame = false
+local dragStartPos
+local frameStartPos
+
+local function updateDrag(input)
+    local delta = input.Position - dragStartPos
+    ScreenGui.Position = UDim2.new(frameStartPos.X.Scale, frameStartPos.X.Offset + delta.X, frameStartPos.Y.Scale, frameStartPos.Y.Offset + delta.Y)
+end
+
+TeleportButton.MouseButton1Click:Connect(function()
+    TeleportFrame.Visible = not TeleportFrame.Visible
+end)
+
+XButton.MouseButton1Click:Connect(function()
+    TeleportFrame:Destroy()
+    TeleportButton:Destroy()
+    XButton:Destroy()
+end)
+
+ScreenGui.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        local guiPosition = ScreenGui.AbsolutePosition
+        local guiSize = ScreenGui.AbsoluteSize
+        local mousePosition = input.Position
+        if mousePosition.X >= guiPosition.X and mousePosition.X <= guiPosition.X + guiSize.X
+            and mousePosition.Y >= guiPosition.Y and mousePosition.Y <= guiPosition.Y + guiSize.Y then
+            draggingFrame = true
+            dragStartPos = input.Position
+            frameStartPos = ScreenGui.Position
+            input.UserInputState = Enum.UserInputState.Begin
+        end
+    end
+end)
+
+ScreenGui.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        if draggingFrame then
+            updateDrag(input)
+        end
+    end
+end)
+
+ScreenGui.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        draggingFrame = false
+    end
+end)
+
+end
